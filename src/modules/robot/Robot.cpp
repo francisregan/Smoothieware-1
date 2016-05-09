@@ -31,6 +31,9 @@ using std::string;
 #include "arm_solutions/HBotSolution.h"
 #include "arm_solutions/CoreXZSolution.h"
 #include "arm_solutions/MorganSCARASolution.h"
+#include "arm_solutions/GearScaraSolution.h"
+#include "arm_solutions/BigXumingSolution.h"
+
 #include "StepTicker.h"
 #include "checksumm.h"
 #include "utils.h"
@@ -66,6 +69,8 @@ using std::string;
 #define  corexz_checksum                     CHECKSUM("corexz")
 #define  kossel_checksum                     CHECKSUM("kossel")
 #define  morgan_checksum                     CHECKSUM("morgan")
+#define  gear_scara_checksum				CHECKSUM("gear_scara")
+#define  xuming_checksum					CHECKSUM("xuming")
 
 // new-style actuator stuff
 #define  actuator_checksum                   CHEKCSUM("actuator")
@@ -145,13 +150,20 @@ void Robot::on_module_loaded()
 void Robot::load_config()
 {
     // Arm solutions are used to convert positions in millimeters into position in steps for each stepper motor.
-    // While for a cartesian arm solution, this is a simple multiplication, in other, less simple cases, there is some serious math to be done.
+    // While for a Cartesian arm solution, this is a simple multiplication, in other, less simple cases, there is some serious math to be done.
     // To make adding those solution easier, they have their own, separate object.
     // Here we read the config to find out which arm solution to use
     if (this->arm_solution) delete this->arm_solution;
     int solution_checksum = get_checksum(THEKERNEL->config->value(arm_solution_checksum)->by_default("cartesian")->as_string());
     // Note checksums are not const expressions when in debug mode, so don't use switch
-    if(solution_checksum == hbot_checksum || solution_checksum == corexy_checksum) {
+
+    if(solution_checksum == xuming_checksum ) {
+        this->arm_solution = new BigXumingSolution(THEKERNEL->config);
+
+    } else if(solution_checksum == gear_scara_checksum ) {
+            this->arm_solution = new GearScaraSolution(THEKERNEL->config);
+
+    } else if(solution_checksum == hbot_checksum || solution_checksum == corexy_checksum) {
         this->arm_solution = new HBotSolution(THEKERNEL->config);
 
     } else if(solution_checksum == corexz_checksum) {

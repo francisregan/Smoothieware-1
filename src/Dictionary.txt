@@ -9,3 +9,10 @@ gxxx
 mxxx
 subcode
 grbl
+libs
+extruders
+config
+const
+theta
+psi
+min
