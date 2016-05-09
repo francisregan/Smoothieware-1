@@ -32,7 +32,7 @@ using namespace std;
  *
  * Since delete() is not thread-safe, we must marshall deletable items out of ISR context
  *
- * To do this, we have implmented a *double* ringbuffer- two ringbuffers sharing the same ring, and one index pointer
+ * To do this, we have implemented a *double* ringbuffer- two ringbuffers sharing the same ring, and one index pointer
  *
  * as in regular ringbuffers, HEAD always points to a clean, free block. We are free to prepare it as we see fit, at our leisure.
  * When the block is fully prepared, we increment the head pointer, and from that point we must not touch it anymore.

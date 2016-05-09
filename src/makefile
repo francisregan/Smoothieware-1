@@ -29,7 +29,7 @@ ENABLE_DEBUG_MONITOR?=0
 
 # this is the default UART baud rate used if it is not set in config
 # it is also the baud rate used to report any errors found while parsing the config file
-DEFAULT_SERIAL_BAUD_RATE?=9600
+DEFAULT_SERIAL_BAUD_RATE?=9600 
 
 ifeq "$(ENABLE_DEBUG_MONITOR)" "1"
 # Can add MRI_UART_BAUD=115200 to next line if GDB fails to connect to MRI.
@@ -37,6 +37,7 @@ ifeq "$(ENABLE_DEBUG_MONITOR)" "1"
 MRI_UART=MRI_UART_0
 MRI_BREAK_ON_INIT=1
 MRI_SEMIHOST_STDIO=1
+
 else
 MRI_UART=MRI_UART_0 MRI_UART_SHARE
 MRI_BREAK_ON_INIT=0

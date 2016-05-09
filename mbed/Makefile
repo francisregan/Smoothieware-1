@@ -12,7 +12,7 @@ $(DIRS):
 	@ $(MAKE) -C $@
 
 $(DIRSCLEAN): %.clean:
-	@echo Cleaning $*
+	@echo =======/mbed/makefile clean:  $* $(DIRSCLEAN)
 	@ $(MAKE) -C $*  clean
 
 .PHONY: all clean $(DIRS) $(DIRSCLEAN)

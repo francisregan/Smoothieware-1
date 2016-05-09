@@ -11,7 +11,9 @@ all:
 clean: $(DIRSCLEAN)
 
 $(DIRSCLEAN): %.clean:
-	@echo Cleaning $*
+	@echo %%%%%%%%%%%%%%% Cleaning $*
+	@echo ============ Cleaning $(DIRSCLEAN),
+	@echo -----------------$*
 	@ $(MAKE) -C $*  clean
 
 debug-store:
@@ -27,9 +29,12 @@ upload:
 	@ $(MAKE) -C src upload
 
 debug:
+	@echo =========================  going to copy bin file
 	@ $(MAKE) -C src debug
+	
 
 console:
 	@ $(MAKE) -C src console
 
 .PHONY: all $(DIRS) $(DIRSCLEAN) debug-store flash upload debug console dfu
+

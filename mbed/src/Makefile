@@ -63,10 +63,12 @@ endif
 all: $(COMMON_HEADERS) $(DEVICES)
 
 clean: $(DEVICESCLEAN) clean_drop
+	@echo 4444444444444444    /mbed/src/makefile clean $(DEVICESCLEAN)
 
 clean_drop:
-	@echo Cleaning $(DROP_DIR)
-	$(Q) $(REMOVE_DIR) $(call convert-slash,$(DROP_DIR)) $(QUIET)
+	@echo 3333333333333333    /mbed/src/makefile clean:clean_drop: Cleaning $(DROP_DIR) $(Q)
+	@echo 333---- $(Q) $(REMOVE_DIR)  
+	$(Q) $(REMOVE_DIR) $(call convert-slash,$(DROP_DIR)) $(QUIET) 
 
 $(DEVICES):
 	@echo Building $@

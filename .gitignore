@@ -22,3 +22,8 @@ debug
 /win_install.log
 /linux_install.log
 
+src/libs/checksumm.h
+.settings/org.eclipse.cdt.core.prefs
+.project
+src/libs/checksumm.h
+.settings/language.settings.xml
