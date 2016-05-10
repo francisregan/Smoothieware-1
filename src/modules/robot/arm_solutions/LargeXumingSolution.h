@@ -7,9 +7,9 @@
 
 #include "libs/Config.h"
 
-class BigXumingSolution : public BaseSolution {
+class LargeXumingSolution : public BaseSolution {
     public:
-	BigXumingSolution(Config*);
+	LargeXumingSolution(Config*);
         void cartesian_to_actuator( const float millimeters[], ActuatorCoordinates &steps ) override;
         void actuator_to_cartesian( const ActuatorCoordinates &steps, float millimeters[] ) override;
 };

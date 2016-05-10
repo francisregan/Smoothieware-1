@@ -1,25 +1,24 @@
-#include "BigXumingSolution.h"
-
 #include "ActuatorCoordinates.h"
 #include "ConfigValue.h"
 #include "checksumm.h"
+#include "LargeXumingSolution.h"
 
 #define x_reduction_checksum         CHECKSUM("x_reduction")
 #define z_reduction_checksum         CHECKSUM("z_reduction")
 
-BigXumingSolution::BigXumingSolution(Config* config)
+LargeXumingSolution::LargeXumingSolution(Config* config)
 {
    // x_reduction = config->value(x_reduction_checksum)->by_default(1.0f)->as_number();
     //z_reduction = config->value(z_reduction_checksum)->by_default(3.0f)->as_number();
 }
 
-void BigXumingSolution::cartesian_to_actuator(const float cartesian_mm[], ActuatorCoordinates &actuator_mm ){
+void LargeXumingSolution::cartesian_to_actuator(const float cartesian_mm[], ActuatorCoordinates &actuator_mm ){
   //  actuator_mm[ALPHA_STEPPER] = (this->x_reduction * cartesian_mm[X_AXIS]) + (this->z_reduction * cartesian_mm[Z_AXIS]);
    // actuator_mm[BETA_STEPPER ] = (this->x_reduction * cartesian_mm[X_AXIS]) - (this->z_reduction * cartesian_mm[Z_AXIS]);
     actuator_mm[GAMMA_STEPPER] = cartesian_mm[Y_AXIS];
 }
 
-void BigXumingSolution::actuator_to_cartesian(const ActuatorCoordinates &actuator_mm, float cartesian_mm[] ){
+void LargeXumingSolution::actuator_to_cartesian(const ActuatorCoordinates &actuator_mm, float cartesian_mm[] ){
    // cartesian_mm[X_AXIS] = (0.5F/this->x_reduction) * (actuator_mm[ALPHA_STEPPER] + actuator_mm[BETA_STEPPER]);
    // cartesian_mm[Z_AXIS] = (0.5F/this->z_reduction) * (actuator_mm[ALPHA_STEPPER] - actuator_mm[BETA_STEPPER]);
     cartesian_mm[Y_AXIS] = actuator_mm[GAMMA_STEPPER];

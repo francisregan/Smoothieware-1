@@ -32,7 +32,7 @@ using std::string;
 #include "arm_solutions/CoreXZSolution.h"
 #include "arm_solutions/MorganSCARASolution.h"
 #include "arm_solutions/GearScaraSolution.h"
-#include "arm_solutions/BigXumingSolution.h"
+#include "arm_solutions/LargeXumingSolution.h"
 
 #include "StepTicker.h"
 #include "checksumm.h"
@@ -70,7 +70,7 @@ using std::string;
 #define  kossel_checksum                     CHECKSUM("kossel")
 #define  morgan_checksum                     CHECKSUM("morgan")
 #define  gear_scara_checksum				CHECKSUM("gear_scara")
-#define  xuming_checksum					CHECKSUM("xuming")
+#define  large_xuming_checksum					CHECKSUM("large_xuming")
 
 // new-style actuator stuff
 #define  actuator_checksum                   CHEKCSUM("actuator")
@@ -157,8 +157,8 @@ void Robot::load_config()
     int solution_checksum = get_checksum(THEKERNEL->config->value(arm_solution_checksum)->by_default("cartesian")->as_string());
     // Note checksums are not const expressions when in debug mode, so don't use switch
 
-    if(solution_checksum == xuming_checksum ) {
-        this->arm_solution = new BigXumingSolution(THEKERNEL->config);
+    if(solution_checksum == large_xuming_checksum ) {
+        this->arm_solution = new LargeXumingSolution(THEKERNEL->config);
 
     } else if(solution_checksum == gear_scara_checksum ) {
             this->arm_solution = new GearScaraSolution(THEKERNEL->config);

@@ -12,6 +12,7 @@
 #include "modules/tools/extruder/ExtruderMaker.h"
 #include "modules/tools/temperaturecontrol/TemperatureControlPool.h"
 #include "modules/tools/endstops/Endstops.h"
+#include "modules/tools/endstops/Endstops_Delta.h"
 #include "modules/tools/zprobe/ZProbe.h"
 #include "modules/tools/scaracal/SCARAcal.h"
 #include "RotaryDeltaCalibration.h"
@@ -64,6 +65,8 @@
 #define disable_msd_checksum  CHECKSUM("msd_disable")
 #define dfu_enable_checksum  CHECKSUM("dfu_enable")
 #define watchdog_timeout_checksum  CHECKSUM("watchdog_timeout")
+#define arm_solution_checksum CHECKSUM("arm_solution")
+#define linear_delta_checksum CHECKSUM("linear_delta")
 
 
 // USB Stuff
@@ -141,8 +144,20 @@ void init() {
     kernel->add_module( new(AHB0) CurrentControl() );
     kernel->add_module( new(AHB0) KillButton() );
     kernel->add_module( new(AHB0) PlayLed() );
-    kernel->add_module( new(AHB0) Endstops() );
 
+
+    kernel->add_module( new(AHB0) Endstops() );
+     // Note checksums are not const expressions when in debug mode, so don't use switch
+    /*
+	int solution_checksum = get_checksum(THEKERNEL->config->value(arm_solution_checksum)->by_default("cartesian")->as_string());
+
+	if(solution_checksum == linear_delta_checksum){
+    	kernel->add_module(new(AHB0) Endstops_Delta());
+    }
+    else  //Normal Endstops
+        kernel->add_module( new(AHB0) Endstops() );
+    }
+	*/
 
     // these modules can be completely disabled in the Makefile by adding to EXCLUDE_MODULES
     #ifndef NO_TOOLS_SWITCH

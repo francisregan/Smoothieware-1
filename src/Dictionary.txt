@@ -16,3 +16,7 @@ const
 theta
 psi
 min
+cartesian
+corexy
+steppers
+endstops

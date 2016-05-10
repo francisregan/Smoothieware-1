@@ -619,7 +619,10 @@ void Endstops::home(char axes_to_move)
 
 void Endstops::process_home_command(Gcode* gcode)
 {
-    if( (gcode->subcode == 0 && THEKERNEL->is_grbl_mode()) || (gcode->subcode == 2 && !THEKERNEL->is_grbl_mode()) ) {
+	gcode->stream->printf("============= process_home_command()");
+
+    if( (gcode->subcode == 0 && THEKERNEL->is_grbl_mode())
+    		|| (gcode->subcode == 2 && !THEKERNEL->is_grbl_mode()) ) {
         // G28 in grbl mode or G28.2 in normal mode will do a rapid to the predefined position
         // TODO spec says if XYZ specified move to them first then move to MCS of specified axis
         char buf[32];
@@ -635,6 +638,7 @@ void Endstops::process_home_command(Gcode* gcode)
 
     } else if(gcode->subcode == 1) { // G28.1 set pre defined position
         // saves current position in absolute machine coordinates
+    	gcode->stream->printf("==== G28.1 robot->save_postion");
         THEKERNEL->robot->get_axis_position(saved_position);
         return;
 
@@ -652,10 +656,22 @@ void Endstops::process_home_command(Gcode* gcode)
     } else if(gcode->subcode == 4) { // G28.4 is a smoothie special it sets manual homing based on the actuator position (used for rotary delta)
         // do a manual homing based on given coordinates, no endstops required, NOTE does not support the multi actuator hack
         ActuatorCoordinates ac;
-        if(gcode->has_letter('A')) ac[0] =  gcode->get_value('A');
-        if(gcode->has_letter('B')) ac[1] =  gcode->get_value('B');
-        if(gcode->has_letter('C')) ac[2] =  gcode->get_value('C');
+        gcode->stream->printf("=========  G28.4  Set actuator position manually... ");
+
+        if(gcode->has_letter('A')) {
+        	ac[0] =  gcode->get_value('A');
+        	gcode->stream->printf("%s:%d ","Alpha position= ",(int)ac[0]);
+        }
+        if(gcode->has_letter('B')) {
+        	ac[1] =  gcode->get_value('B');
+        	gcode->stream->printf("%s:%d ","Beta position= ",(int)ac[1]);
+        }
+        if(gcode->has_letter('C')) {
+        	ac[2] =  gcode->get_value('C');
+        	gcode->stream->printf("%s:%d ","Gama position= ",(int)ac[2]);
+        }
         THEKERNEL->robot->reset_actuator_position(ac);
+        gcode->stream->printf("finished   THEKERNEL->robot->reset_actuator_position()  ");
         return;
 
     } else if(THEKERNEL->is_grbl_mode()) {
@@ -830,6 +846,7 @@ void Endstops::on_gcode_received(void *argument)
 
         switch (gcode->m) {
             case 119: {
+            	gcode->stream->printf("============= M119 reporting");
                 for (int i = 0; i < 6; ++i) {
                     if(this->pins[i].connected())
                         gcode->stream->printf("%s:%d ", endstop_names[i], this->pins[i].get());
